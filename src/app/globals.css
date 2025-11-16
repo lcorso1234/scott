@@ -1,0 +1,127 @@
+@import "tailwindcss";
+
+:root {
+  --background: #0d1115;
+  --foreground: #f5f7fb;
+  --gunmetal-dark: #0f1317;
+  --gunmetal: #181c20;
+  --gunmetal-light: #1f2429;
+  --accent-gradient: linear-gradient(
+    120deg,
+    #ff007a,
+    #ffef00,
+    #00ffcc,
+    #6f00ff
+  );
+  --neon-green: #00ff87;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  min-height: 100vh;
+  background: radial-gradient(
+      circle at top,
+      rgba(255, 255, 255, 0.08),
+      transparent 45%
+    ),
+    radial-gradient(circle at bottom, rgba(255, 255, 255, 0.04), transparent 40%),
+    var(--gunmetal-dark);
+  color: var(--foreground);
+  font-family: var(--font-geist-sans), system-ui, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", sans-serif;
+  padding: 1.5rem;
+  position: relative;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.2'/%3E%3C/svg%3E");
+  opacity: 0.2;
+  pointer-events: none;
+  mix-blend-mode: screen;
+}
+
+.accent-gradient {
+  background: var(--accent-gradient);
+}
+
+.neon-border {
+  background: linear-gradient(130deg, rgba(0, 255, 135, 0.95), rgba(0, 155, 105, 0.8));
+}
+
+.neon-card {
+  background: linear-gradient(155deg, var(--gunmetal), var(--gunmetal-light));
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 25px 70px rgba(0, 0, 0, 0.75),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    inset 0 -2px 12px rgba(0, 0, 0, 0.5);
+}
+
+.metallic-stroke {
+  background: linear-gradient(120deg, rgba(255, 255, 255, 0.35), transparent);
+  opacity: 0.4;
+}
+
+.neon-button {
+  position: relative;
+  background: linear-gradient(120deg, var(--neon-green), #b9ffd8);
+  color: #03160d;
+  border: 1px solid var(--neon-green);
+  box-shadow: 0 20px 35px rgba(0, 0, 0, 0.65),
+    0 0 30px rgba(0, 255, 135, 0.45);
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.4);
+}
+
+.neon-button::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    circle at 30% 20%,
+    rgba(255, 255, 255, 0.7),
+    transparent 55%
+  );
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+@keyframes jiggle {
+  0%,
+  100% {
+    transform: translateX(0) rotate(0deg);
+  }
+  10% {
+    transform: translateX(-1px) rotate(-2deg);
+  }
+  20% {
+    transform: translateX(1px) rotate(2deg);
+  }
+  30% {
+    transform: translateX(-0.5px) rotate(-1deg);
+  }
+  40% {
+    transform: translateX(0.5px) rotate(1deg);
+  }
+  50% {
+    transform: translateX(0);
+  }
+}
+
+.animate-jiggle {
+  animation: jiggle 2.8s ease-in-out infinite;
+  animation-delay: 1.2s;
+}
