@@ -30,18 +30,13 @@ export default function Home() {
               <div className="metallic-stroke absolute inset-x-6 top-0 h-[2px] rounded-full" />
               <div className="relative">
                 <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-4">
-                    <div className="flex h-16 w-16 items-center justify-center rounded-3xl border border-white/20 bg-black/40 text-4xl font-semibold tracking-[0.3em] text-white shadow-inner shadow-black/50">
-                      I
-                    </div>
-                    <div>
-                      <p className="text-xs uppercase tracking-[0.55em] text-white/50">
-                        Consultancy
-                      </p>
-                      <p className="text-2xl font-semibold text-white">
-                        Creative Juice
-                      </p>
-                    </div>
+                  <div>
+                    <p className="text-xs uppercase tracking-[0.55em] text-white/50">
+                      Consultancy
+                    </p>
+                    <p className="text-2xl font-semibold text-white">
+                      Creative Juice
+                    </p>
                   </div>
                   <div className="text-right text-xs uppercase tracking-wide text-white/60">
                     <span className="block text-[11px]">Built in</span>
