@@ -1,6 +1,7 @@
 const contactFields = [
   { label: "First Name", value: "Scott" },
   { label: "Last Name", value: "Johnson" },
+  { label: "Title", value: "Connector" },
   { label: "Company Name", value: "Creative Juice" },
   { label: "Phone Number", value: "708.277.3609" },
 ];
@@ -10,6 +11,7 @@ const vCardPayload = [
   "VERSION:3.0",
   "N:Johnson;Scott;;;",
   "FN:Scott Johnson",
+  "TITLE:Connector",
   "ORG:Creative Juice",
   "TEL;TYPE=CELL,VOICE:708.277.3609",
   "END:VCARD",
