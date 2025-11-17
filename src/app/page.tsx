@@ -8,7 +8,6 @@ const contactFields = [
   { label: "Title", value: "Connector" },
   { label: "Company", value: "Creative Juice" },
   { label: "Phone", value: "708.277.3609" },
-  { label: "Email", value: "scottjohnson9209@gmail.com" },
 ];
 
 const note = "Note: Coffee is basically adult chocolate milk.";
