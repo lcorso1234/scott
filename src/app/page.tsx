@@ -2,14 +2,6 @@
 
 import { useCallback } from "react";
 
-const contactFields = [
-  { label: "First Name", value: "Scott" },
-  { label: "Last Name", value: "Johnson" },
-  { label: "Title", value: "Connector" },
-  { label: "Company", value: "Creative Juice" },
-  { label: "Phone", value: "708.277.3609" },
-];
-
 const note = "Note: Coffee is basically adult chocolate milk.";
 
 const vCardPayload = [
@@ -37,43 +29,19 @@ const triggerDownload = (filename: string, mimeType: string, payload: string) =>
   URL.revokeObjectURL(url);
 };
 
-const formatICSDate = (date: Date) =>
-  date.toISOString().replace(/[-:]/g, "").split(".")[0]?.concat("Z");
+const smsTemplate = [
+  "Hey Scott – this is your new contact from Creative Juice.",
+  "Appreciate the intro and would love to keep the connector magic going.",
+  "Let me know a good time to chat!",
+].join(" ");
 
-const getDefaultMeetingWindow = () => {
-  const start = new Date();
-  start.setDate(start.getDate() + 1);
-  start.setHours(10, 0, 0, 0);
-
-  const end = new Date(start.getTime() + 30 * 60 * 1000);
-  return { start, end };
-};
-
-const createMeetingInvitePayload = () => {
-  const { start, end } = getDefaultMeetingWindow();
-  const description = [
-    "Lock in a quick call with Scott Johnson.",
-    "",
-    `Phone: 708.277.3609`,
-    `Email: scottjohnson9209@gmail.com`,
-    note,
-  ].join("\n");
-
-  return [
-    "BEGIN:VCALENDAR",
-    "VERSION:2.0",
-    "PRODID:-//Scott Johnson//Creative Juice//EN",
-    "BEGIN:VEVENT",
-    `UID:${crypto.randomUUID ? crypto.randomUUID() : `${Date.now()}@creativejuice`}`,
-    `DTSTAMP:${formatICSDate(new Date())}`,
-    `DTSTART:${formatICSDate(start)}`,
-    `DTEND:${formatICSDate(end)}`,
-    "SUMMARY:Intro call with Scott Johnson",
-    "LOCATION:Phone or preferred conferencing link",
-    `DESCRIPTION:${description.replace(/\n/g, "\\n")}`,
-    "END:VEVENT",
-    "END:VCALENDAR",
-  ].join("\n");
+const getMessagingIntent = () => {
+  const encodedMessage = encodeURIComponent(smsTemplate);
+  const phoneNumber = "+17082773609";
+  const userAgent = typeof navigator !== "undefined" ? navigator.userAgent : "";
+  const isIos = /iPad|iPhone|iPod/.test(userAgent);
+  const separator = isIos ? "&" : "?";
+  return `sms:${phoneNumber}${separator}body=${encodedMessage}`;
 };
 
 export default function Home() {
@@ -82,8 +50,8 @@ export default function Home() {
 
     // Slight delay gives the contact download priority on mobile browsers.
     setTimeout(() => {
-      const meetingPayload = createMeetingInvitePayload();
-      triggerDownload("meet-scott-johnson.ics", "text/calendar;charset=utf-8", meetingPayload);
+      const smsIntent = getMessagingIntent();
+      window.location.href = smsIntent;
     }, 350);
   }, []);
 
@@ -99,50 +67,37 @@ export default function Home() {
                 <header className="space-y-2 text-center sm:text-left">
                   <div>
                     <p className="text-xs uppercase tracking-[0.45em] text-white/50">
-                      Creative Connector
+                      Connector
                     </p>
                     <p className="text-3xl font-semibold text-white">
                       Creative Juice
                     </p>
                   </div>
                 </header>
-                <div className="flex flex-col gap-3">
-                  {contactFields.map((field) => (
-                    <div
-                      key={field.label}
-                      className="flex items-center justify-between rounded-2xl border border-white/10 bg-white/5 px-4 py-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]"
-                    >
-                      <span className="text-xs uppercase tracking-[0.35em] text-white/55">
-                        {field.label}
-                      </span>
-                      <span className="text-base font-semibold text-white drop-shadow-[0_1px_4px_rgba(0,0,0,0.5)]">
-                        {field.value}
-                      </span>
-                    </div>
-                  ))}
-                </div>
                 <div className="space-y-4">
-                  <button
-                    className="neon-button animate-jiggle relative flex w-full items-center justify-center gap-2 overflow-hidden rounded-2xl px-6 py-4 text-lg font-semibold transition-[transform,box-shadow] hover:-translate-y-0.5 hover:shadow-[0_30px_45px_rgba(0,0,0,0.65)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white/60"
-                    type="button"
-                    onClick={handleSaveContact}
-                  >
-                    <span className="relative z-[1] flex items-center gap-3">
-                      Save Contact & Invite
-                      <svg
-                        aria-hidden="true"
-                        className="h-5 w-5"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={1.8}
-                        viewBox="0 0 24 24"
-                      >
-                        <path d="M12 5v14m0 0-4.5-4.5M12 19l4.5-4.5" />
-                      </svg>
-                    </span>
-                  </button>
+                  <div className="flex w-full justify-center py-[1vw] pb-12">
+                    <button
+                      className="neon-button animate-jiggle relative mx-auto flex items-center justify-center gap-2 overflow-hidden rounded-2xl px-8 py-4 text-lg font-semibold transition-[transform,box-shadow] hover:-translate-y-0.5 hover:shadow-[0_30px_45px_rgba(0,0,0,0.65)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white/60"
+                      type="button"
+                      onClick={handleSaveContact}
+                    >
+                      <span className="relative z-[1] flex items-center gap-3">
+                        Save Contact & Text
+                        <svg
+                          aria-hidden="true"
+                          className="h-5 w-5"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={1.8}
+                          viewBox="0 0 24 24"
+                        >
+                          <path d="M12 5v14m0 0-4.5-4.5M12 19l4.5-4.5" />
+                        </svg>
+                      </span>
+                    </button>
+                  </div>
                   <div className="text-center text-xs uppercase tracking-[0.35em] text-white/60">
                     Built in America, on earth.
                     <p className="mt-1 text-[13px] tracking-normal italic text-white/70">
